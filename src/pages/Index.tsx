@@ -49,7 +49,10 @@ export default function Index() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: prompt.trim() }),
+        body: JSON.stringify({ 
+          prompt: prompt.trim(),
+          safety_tolerance: 6
+        }),
       });
 
       if (!response.ok) {
