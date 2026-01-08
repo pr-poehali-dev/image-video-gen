@@ -1,0 +1,17 @@
+{
+  "tests": [
+    {
+      "name": "Test video generation",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "prompt": "Ocean waves crashing on the shore"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "url": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
