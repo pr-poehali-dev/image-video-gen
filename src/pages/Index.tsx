@@ -43,24 +43,45 @@ export default function Index() {
 
     setIsGenerating(true);
 
-    setTimeout(() => {
+    try {
+      const response = await fetch('https://functions.poehali.dev/call/generate_image', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: prompt.trim() }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Ошибка генерации');
+      }
+
+      const data = await response.json();
+      
       const newItem: GeneratedItem = {
         id: Date.now().toString(),
         prompt,
         type: 'image',
-        url: 'https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=800',
+        url: data.url,
         timestamp: new Date(),
       };
 
       setGeneratedItems([newItem, ...generatedItems]);
-      setIsGenerating(false);
       setActiveTab('gallery');
 
       toast({
         title: 'Готово!',
         description: 'Изображение успешно создано',
       });
-    }, 3000);
+    } catch (error) {
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось создать изображение. Попробуйте ещё раз.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleTemplateClick = (templateText: string) => {
